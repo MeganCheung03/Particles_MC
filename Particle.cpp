@@ -1,6 +1,6 @@
 #include "Particle.h"
 
-Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition)
+Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition)
 {
     Particle(...) : m_A(2, numPoints);
     m_ttl = TTL;
@@ -44,7 +44,7 @@ Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition)
     }
 }
 
-virtual void draw(RenderTarget& target, RenderStates states) const override
+virtual void Particle::draw(RenderTarget& target, RenderStates states) const override
 {
     VertexArray lines = { TriangleFan, numPoints + 1 };
     Vector2f center = target.mapCoordsToPixel(m_cartesianPlane);
@@ -60,7 +60,7 @@ virtual void draw(RenderTarget& target, RenderStates states) const override
     target.draw(lines);
 }
 
-void update(float dt)
+void Particle::update(float dt)
 {
     m_ttl - dt;
     rotate(dt * m_radiansPerSec);
@@ -216,7 +216,7 @@ void Particle::unitTests()
     cout << "Score: " << score << " / 7" << endl;
 }
 
-void rotate(double theta)
+void Particle::rotate(double theta)
 {
     Vector2f temp = m_centerCoordinate;
     translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
@@ -225,7 +225,7 @@ void rotate(double theta)
     translate(temp.x, temp.y);
 }
 
-void scale(double c)
+void Particle::scale(double c)
 {
     Vector2f temp = m_centerCoordinate;
     translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
@@ -234,7 +234,7 @@ void scale(double c)
     translate(temp.x, temp.y);
 }
 
-void translate(double xShift, double yShift)
+void Particle::translate(double xShift, double yShift)
 {
     TranslationMatrix T = (xShift, yShift);
     T + m_A;

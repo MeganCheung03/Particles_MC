@@ -3,13 +3,13 @@
 using namespace sf;
 using namespace std;
 
-Engine()
+Engine::Engine()
 {
 	create(m_Window);
 	VideoMode::getDesktopMode();
 }
 
-void run()
+void Engine::run()
 {
 	Clock c;
 	Particle p;
@@ -30,7 +30,7 @@ void run()
 	}
 }
 
-void input()
+void Engine::input()
 {
 	Event event;
 	while (window.pollEvent(event))
@@ -54,7 +54,7 @@ void input()
 	}
 }
 
-void update(float dtAsSeconds)
+void Engine::update(float dtAsSeconds)
 {
 	for (int i = 0; i < m_particles.size(); ++i)
 	{
@@ -84,7 +84,7 @@ void update(float dtAsSeconds)
 
 }
 
-void draw()
+void Engine::draw()
 {
 	m_Window.clear();
 	for (int i = 0; i < m_Particles.size(); ++i)
