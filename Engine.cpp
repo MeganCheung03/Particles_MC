@@ -59,18 +59,18 @@ void Engine::input()
 
 void Engine::update(float dtAsSeconds)
 {
-	vector<Particles> p = m_particles.begin();
+	vector<Particle> p = m_particles.begin();
 
-	while (it != m_particles.end())
+	while (p != m_particles.end())
 	{
-		if (it->getTTL() > 0.0)
+		if (p->getTTL() > 0.0)
 		{
-			it->update(dtAsSeconds);
-			++it;
+			p->update(dtAsSeconds);
+			++p;
 		}
 		else
 		{
-			it = m_particles.erase(it);
+			p = m_particles.erase(p);
 		}
 	}
 
