@@ -26,8 +26,8 @@ void Engine::run()
 
 	while (m_Window.isOpen())
 	{
-		c.restart();
-		float seconds = c.asSeconds();
+		Time t = c.restart();
+		float seconds = t.asSeconds();
 		input();
 		update(seconds);
 		draw();
@@ -59,21 +59,18 @@ void Engine::input()
 
 void Engine::update(float dtAsSeconds)
 {
-	for (int i = 0; i < m_particles.size(); ++i)
-	{
-		if (dtAsSeconds == 0)
-		{
-			m_particles.erase(i);
-		}
+	vector<Particles> p = m_particles.begin();
 
-		if (getTTL() > 0.0)
+	while (it != m_particles.end())
+	{
+		if (it->getTTL() > 0.0)
 		{
-			update(dtAsSeconds);
-			++i;
+			it->update(dtAsSeconds);
+			++it;
 		}
 		else
 		{
-			m_particles.erase(i);
+			it = m_particles.erase(it);
 		}
 	}
 
@@ -82,7 +79,7 @@ void Engine::update(float dtAsSeconds)
 void Engine::draw()
 {
 	m_Window.clear();
-	for (int i = 0; i < m_Particles.size(); ++i)
+	for (int i = 0; i < m_particles.size(); ++i)
 	{
 		m_Window.draw(i);
 	}
