@@ -1,12 +1,17 @@
-#include <Engine.h>
+#include "Engine.h"
+#include <iostream>
 
 using namespace sf;
 using namespace std;
 
 Engine::Engine()
 {
+	int pixelWidth = VideoMode::getDesktopMode().width;
+	int pixelHeight = VideoMode::getDesktopMode().height;
+
+	VideoMode vm(pixelWidth, pixelHeight);
 	create(m_Window);
-	VideoMode::getDesktopMode();
+
 }
 
 void Engine::run()
