@@ -1,4 +1,7 @@
 #include "Particle.h"
+#include <cmath>
+#include <cstdlib>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition) : m_A(2, numPoints)
 {
@@ -9,27 +12,27 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     m_cartesianPlane = setSize(target.getSize().x, (- 1.0) * target.getSize().y);
     m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane);
 
-    m_vx = rand() % 401 + 100;
-    if (m_vx != 0)//randomize x
+    m_vx = rand() % 401 + 100; //randomizing x
+    if (m_vx != 0)
     {
         m_vx *= (-1);
     }
     
-    m_vy = rand() % 401 + 100;
+    m_vy = rand() % 401 + 100; //randominzing y
 
     m_color1 = Colors::White;
     m_color2 = Colors::Green;
     float theta = ((float)rand() / (RAND_MAX)) * (M_PI / 2);
     float dTheta = 2 * M_PI / (numPoints - 1);
 
-    for (int j = 0; j < numPoints; ++j)
+    for (int i = 0; i < numPoints; ++i)
     {
         float r, dx, dy;
         r = rand() % 61 + 20;
         dx = r * cos(theta);
         dy = r * sin(theta);
-        m_A(0, j) = m_centerCoordinate.x + dx;
-        m_A(1, j) = m_centerCoordinate.y + dy;
+        m_A(0, i) = m_centerCoordinate.x + dx;
+        m_A(1, i) = m_centerCoordinate.y + dy;
         theta += dTheta;
     }
 }
@@ -41,10 +44,10 @@ virtual void Particle::draw(RenderTarget& target, RenderStates states) const
     lines[0].position = center;
     lines[0].color = m_color1;
 
-    for (int j = 1; j < m_numPoints; ++j)
+    for (int i = 1; i < m_numPoints; ++i)
     {
-        lines[j].position = target.mapCoordsToPixel(m_cartesianPlane);
-        lines[j].color = m_color2;
+        lines[i].position = target.mapCoordsToPixel(m_cartesianPlane);
+        lines[i].color = m_color2;
     }
 
     target.draw(lines);
@@ -220,7 +223,7 @@ void Particle::scale(double c)
     Vector2f temp = m_centerCoordinate;
     translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
     ScalingMatrix S(c);
-    m_A = S* m_A;
+    m_A = S * m_A;
     translate(temp.x, temp.y);
 }
 

@@ -4,34 +4,40 @@ namespace Matrices
 {
     Matrix::Matrix(int _rows, int _cols)
     {
-        a.resize(rows, vector<double>(cols, 0.0));
+        for (int j = 0; j < _cols; ++j)
+        {
+            for (int i = 1; i < _rows; ++i)
+            {
+                a[j][i] = 0;
+            }
+        }
     }
 
-    Matrix operator+(const Matrix& a, const Matrix& b)
+    Matrix operator+(const Matrix& a, const Matrix& b) //adding two matrices
     {
         int rows = a.getRows();
         int cols = a.getCols();
 
-        Matrix result(rows, cols);
+        Matrix added(rows, cols);
 
         for (int i = 0; i < rows; ++i)
         {
             for (int j = 0; j < cols; ++j)
             {
-                result(i, j) = a(i, j) + b(i, j);
+                added(i, j) = a(i, j) + b(i, j);
             }
         }
 
-        return result;
+        return added;
     }
 
-    Matrix operator*(const Matrix& a, const Matrix& b)
+    Matrix operator*(const Matrix& a, const Matrix& b) //multiplying 2 matrices
     {
         int rowsA = a.getRows();
         int colsA = a.getCols();
         int colsB = b.getCols();
 
-        Matrix result(rowsA, colsB);
+        Matrix mult(rowsA, colsB);
 
         for (int i = 0; i < rowsA; ++i)
         {
@@ -44,11 +50,11 @@ namespace Matrices
                     sum += a(i, k) * b(k, j);
                 }
 
-                result(i, j) = sum;
+                mult(i, j) = sum;
             }
         }
 
-        return result;
+        return mult;
     }
 
     bool operator==(const Matrix& a, const Matrix& b)
@@ -56,7 +62,7 @@ namespace Matrices
         if (a.getRows() != b.getRows() || a.getCols() != b.getCols())
         {
             return false;
-        }
+        } //see if number of row and cols are the same
 
         for (int i = 0; i < a.getRows(); ++i)
         {
@@ -67,7 +73,7 @@ namespace Matrices
                     return false;
                 }
             }
-        }
+        } //see if each element is same
 
         return true;
     }
@@ -77,7 +83,7 @@ namespace Matrices
         return !(a == b);
     }
 
-    ostream& operator<<(ostream& os, const Matrix& a)
+    ostream& operator<<(ostream& os, const Matrix& a) //output the matrix
     {
         int rows = a.getRows();
         int cols = a.getCols();
@@ -92,7 +98,7 @@ namespace Matrices
         }
 
         return os;
-    }
+    } 
 
     RotationMatrix::RotationMatrix(double theta) : Matrix(2, 2)
     {

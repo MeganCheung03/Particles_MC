@@ -6,7 +6,6 @@ using namespace std;
 
 Engine::Engine()
 {
-	//done
 	int pixelWidth = VideoMode::getDesktopMode().width;
 	int pixelHeight = VideoMode::getDesktopMode().height;
 
@@ -51,7 +50,7 @@ void Engine::input()
 				int numPoints = rand() % 26 + 25;
 				Vector2i mousePos = Mouse::getPosition(m_Window);
 				//using Particle::Particle(...) function
-				m_particles.push_back(m_Window, numPoints, mousePos);
+				m_particles.emplace_back(m_Window, numPoints, mousePos);
 			}
 		} 
 	}
