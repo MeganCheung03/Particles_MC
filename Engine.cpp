@@ -42,7 +42,7 @@ void Engine::input()
 		if (event.type == Event::Closed)
 		{
 			//handles event to close window
-			window.close();
+			m_Window.close();
 		}
 		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
@@ -59,18 +59,18 @@ void Engine::input()
 
 void Engine::update(float dtAsSeconds)
 {
-	vector<Particle> p = m_particles.begin();
+	vector<Particle>::iterator it;
 
-	while (p != m_particles.end())
-	{
-		if (p->getTTL() > 0.0)
-		{
-			p->update(dtAsSeconds);
-			++p;
+	for (it = m_particles.begin(); it != m_particles.end();)
+	{ 
+		if (it->getTTL() > 0.0)
+		{ 
+			it->update(dtAsSeconds);
+			it++;
 		}
 		else
 		{
-			p = m_particles.erase(p);
+			it = m_particles.erase(it);
 		}
 	}
 
