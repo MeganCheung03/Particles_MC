@@ -118,26 +118,26 @@ namespace Matrices
 
     RotationMatrix::RotationMatrix(double theta) : Matrix(2, 2)
     {
-        (*this)(0, 0) = cos(theta);
-        (*this)(0, 1) = -sin(theta);
-        (*this)(1, 0) = sin(theta);
-        (*this)(1, 1) = cos(theta);
+        a[0][0] = cos(theta);
+        a[0][1] = -sin(theta);
+        a[1][0] = sin(theta);
+        a[1][1] = cos(theta);
     }
 
     ScalingMatrix::ScalingMatrix(double scale) : Matrix(2, 2)
     {
-        (*this)(0, 0) = scale;
-        (*this)(0, 1) = 0;
-        (*this)(1, 0) = 0;
-        (*this)(1, 1) = scale;
+        a[0][0] = scale;
+        a[0][1] = 0;
+        a[1][0] = 0;
+        a[1][1] = scale;
     }
 
     TranslationMatrix::TranslationMatrix(double xShift, double yShift, int nCols) : Matrix(2, nCols)
     {
         for (int j = 0; j < nCols; ++j)
         {
-            (*this)(0, j) = xShift;
-            (*this)(1, j) = yShift;
+            a[0][j] = xShift;
+            a[1][j] = yShift;
         }
     }
 }
