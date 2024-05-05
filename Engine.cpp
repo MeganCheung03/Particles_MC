@@ -39,21 +39,23 @@ void Engine::input()
 	Event event;
 	while (m_Window.pollEvent(event))
 	{
-		if (event.type == Event::Closed)
+		if (event.type == sf::Event::KeyPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		{
-			//handles event to close window
 			m_Window.close();
 		}
+
+		vector<Particle> newParticle;
 		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
-			for (int i = 0; i < 5; ++i)
+			sf::Vector2i mousePos = sf::Mouse::getPosition(m_Window);
+			for (int i = 0; i < 5; i++)
 			{
 				int numPoints = rand() % 26 + 25;
-				Vector2i mousePos = Mouse::getPosition(m_Window);
-				//using Particle::Particle(...) function
-				m_particles.emplace_back(m_Window, numPoints, mousePos);
+				newParticle.push_back(Particle(m_Window, numPoints, mousePos));
 			}
-		} 
+		}
+		m_particles.insert(m_particles.begin(), newParticle.begin(), newParticle.end());
+	}
 	}
 }
 
@@ -80,6 +82,7 @@ void Engine::draw()
 {
 	m_Window.clear();
 	vector<Particle>::iterator it;
+
 	for (it = m_particles.begin(); it != m_particles.end(); it++)
 	{ 
 		m_Window.draw(*it);
