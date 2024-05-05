@@ -14,9 +14,9 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     m_ttl = TTL;
     m_numPoints = numPoints;
     m_radiansPerSec = ((float)rand() / RAND_MAX) * M_PI;
-    m_cartesianPlane = setCenter(0, 0);
-    m_cartesianPlane = setSize(Vector2f(target.getSize().x, (-1.0) * target.getSize().y));
-    m_centerCoordinate = Vector2f(target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane));
+    m_cartesianPlane.setCenter(0, 0);
+    m_cartesianPlane.setSize(target.getSize().x, (-1.0) * target.getSize().y);
+    m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane);
 
     m_vx = rand() % 401 + 100; //randomizing x
     if (m_vx != 0)
@@ -60,7 +60,7 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
 
     for (int i = 1; i <= m_numPoints; ++i)
     {
-        Vector2f matrixCoords(m_A(0, j - 1), m_A(1, j - 1));
+        Vector2f matrixCoords(m_A(0, i - 1), m_A(1, i - 1));
 
         Vector2i pixelCoords = target.mapCoordsToPixel(matrixCoords, m_cartesianPlane);
         Vector2f coords(pixelCoords);
@@ -248,7 +248,7 @@ void Particle::scale(double c)
 
 void Particle::translate(double xShift, double yShift)
 {
-    Matrices::TranslationMatrix T = (xShift, yShift, m_A.getCols());
+    Matrices::TranslationMatrix T(xShift, yShift, m_A.getCols());
     m_A = T + m_A;
     m_centerCoordinate.x += xShift;
     m_centerCoordinate.y += yShift;
