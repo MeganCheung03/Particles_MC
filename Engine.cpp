@@ -56,7 +56,6 @@ void Engine::input()
 		}
 		m_particles.insert(m_particles.begin(), newParticle.begin(), newParticle.end());
 	}
-	}
 }
 
 void Engine::update(float dtAsSeconds)
