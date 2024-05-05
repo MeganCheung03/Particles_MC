@@ -18,14 +18,21 @@ namespace Matrices
 
     Matrix operator+(const Matrix& a, const Matrix& b) //adding two matrices
     {
-        int rows = a.getRows();
-        int cols = a.getCols();
+        int rowsA = a.getRows();
+        int rowsB = b.getRows();
+        int colsA = a.getCols();
+        int colsB = b.getCols();
 
-        Matrix added(rows, cols);
+        Matrix added(rowsA, colsA);
 
-        for (int i = 0; i < rows; ++i)
+        if (rowsA != rowsB || colsA != colsB)
         {
-            for (int j = 0; j < cols; ++j)
+            throw runtime_error("Error: rows and columns must be the same number");
+        }
+
+        for (int i = 0; i < rowsA; ++i)
+        {
+            for (int j = 0; j < colsA; ++j)
             {
                 added(i, j) = a(i, j) + b(i, j);
             }
@@ -37,23 +44,29 @@ namespace Matrices
     Matrix operator*(const Matrix& a, const Matrix& b) //multiplying 2 matrices
     {
         int rowsA = a.getRows();
+        int rowsB = b.getRows();
         int colsA = a.getCols();
         int colsB = b.getCols();
 
         Matrix mult(rowsA, colsB);
 
-        for (int i = 0; i < rowsA; ++i)
+        if (colsA != rowsB)
         {
-            for (int j = 0; j < colsB; ++j)
+            throw runtime_error("Error: A's columns and B's rows must match");
+        }
+
+        for (int i = 0; i < colsB; ++i)
+        {
+            for (int j = 0; j < rowsA; ++j)
             {
                 double sum = 0.0;
 
                 for (int k = 0; k < colsA; ++k)
                 {
-                    sum += a(i, k) * b(k, j);
+                    sum += a(j, k) * b(k, i);
                 }
 
-                mult(i, j) = sum;
+                mult(j, i) = sum;
             }
         }
 
@@ -65,7 +78,7 @@ namespace Matrices
         if (a.getRows() != b.getRows() || a.getCols() != b.getCols())
         {
             return false;
-        } //see if number of row and cols are the same
+        } 
 
         for (int i = 0; i < a.getRows(); ++i)
         {
@@ -76,7 +89,7 @@ namespace Matrices
                     return false;
                 }
             }
-        } //see if each element is same
+        } 
 
         return true;
     }
@@ -114,8 +127,8 @@ namespace Matrices
     ScalingMatrix::ScalingMatrix(double scale) : Matrix(2, 2)
     {
         a[0][0] = scale;
-        a[0][1] = 0.0;
-        a[1][0] = 0.0;
+        a[0][1] = 0;
+        a[1][0] = 0;
         a[1][1] = scale;
     }
 

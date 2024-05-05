@@ -26,8 +26,14 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     
     m_vy = rand() % 401 + 100; //randominzing y
 
-    m_color1(225, 225, 225);
-    m_color2 = (0, 128, 0);
+    m_color1.r = 255;
+    m_color1.g = 255;
+    m_color1.b = 255;
+
+    m_color2.r = 0;
+    m_color2.g = 128;
+    m_color2.b = 0;
+
     float theta = ((float)rand() / (RAND_MAX)) * (M_PI / 2);
     float dTheta = 2 * M_PI / (numPoints - 1);
 
@@ -43,20 +49,23 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     }
 }
 
-virtual void Particle::draw(RenderTarget& target, RenderStates states) const 
+void Particle::draw(RenderTarget& target, RenderStates states) const
 {
     VertexArray lines = (TriangleFan, m_numPoints + 1);
     Vector2f center = target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane);
     lines[0].position = center;
     lines[0].color = m_color1;
 
-    for (int i = 1; i < m_numPoints; ++i)
+    for (int i = 1; i <= m_numPoints; ++i)
     {
-        lines[i].position = target.mapCoordsToPixel(m_cartesianPlane);
+        Vector2f matrixCoords(m_A(0, j - 1), m_A(1, j - 1));
+        Vector2f pixelCoords = target.mapCoordsToPixel(coords, m_CartesianPlane);
+
+        lines[i].position = pixelCoords;
         lines[i].color = m_color2;
     }
 
-    target.draw(lines);
+    target.draw(lines, states);
 }
 
 void Particle::update(float dt)
@@ -235,7 +244,7 @@ void Particle::scale(double c)
 
 void Particle::translate(double xShift, double yShift)
 {
-    TranslationMatrix T = (xShift, yShift, m_A.getCols());
+    Matrices::TranslationMatrix T = (xShift, yShift, m_A.getCols());
     m_A = T + m_A;
     m_centerCoordinate.x += xShift;
     m_centerCoordinate.y += yShift;
