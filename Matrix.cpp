@@ -1,9 +1,12 @@
 #include "Matrix.h"
+#include <cmath>
 
 namespace Matrices
 {
-    Matrix::Matrix(int _rows, int _cols)
+    Matrix::Matrix(int _rows, int _cols) : rows(_rows), cols(_cols)
     {
+        a.resize(_rows);
+
         for (int j = 0; j < _cols; ++j)
         {
             for (int i = 1; i < _rows; ++i)

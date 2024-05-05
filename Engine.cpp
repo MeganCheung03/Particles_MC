@@ -1,5 +1,9 @@
 #include "Engine.h"
-#include <iostream>
+#include <iostream> 
+#include <SFML/Graphics.hpp>
+#include <SFML/System/Time.hpp>
+#include <cstdlib>
+#include <ctime>
 
 using namespace sf;
 using namespace std;

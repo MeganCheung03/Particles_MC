@@ -1,7 +1,13 @@
 #include "Particle.h"
-#include <cmath>
+#include <iostream>
+#include <SFML/Graphics.hpp>
 #include <cstdlib>
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <ctime>
+#include <cmath>
+#include <random>
+
+using namespace sf;
+using namespace std;
 
 Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition) : m_A(2, numPoints)
 {
@@ -9,8 +15,8 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     m_numPoints = numPoints;
     m_radiansPerSec = ((float)rand() / RAND_MAX) * M_PI;
     m_cartesianPlane = setCenter(0, 0);
-    m_cartesianPlane = setSize(target.getSize().x, (- 1.0) * target.getSize().y);
-    m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane);
+    m_cartesianPlane = setSize(Vector2f(target.getSize().x, (-1.0) * target.getSize().y));
+    m_centerCoordinate = Vector2f(target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane));
 
     m_vx = rand() % 401 + 100; //randomizing x
     if (m_vx != 0)
@@ -20,8 +26,8 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     
     m_vy = rand() % 401 + 100; //randominzing y
 
-    m_color1 = Colors::White;
-    m_color2 = Colors::Green;
+    m_color1(225, 225, 225);
+    m_color2 = (0, 128, 0);
     float theta = ((float)rand() / (RAND_MAX)) * (M_PI / 2);
     float dTheta = 2 * M_PI / (numPoints - 1);
 
@@ -229,8 +235,8 @@ void Particle::scale(double c)
 
 void Particle::translate(double xShift, double yShift)
 {
-    TranslationMatrix T = (xShift, yShift);
-    m_1 = T + m_A;
+    TranslationMatrix T = (xShift, yShift, m_A.getCols());
+    m_A = T + m_A;
     m_centerCoordinate.x += xShift;
     m_centerCoordinate.y += yShift;
 }
