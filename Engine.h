@@ -8,7 +8,7 @@ using namespace std;
 class Engine
 {
 private:
-	// A regular RenderWindowRenderWindow m_Window;
+	RenderWindowRenderWindow m_Window;
 
 	//vector for Particles
 	vector<Particle> m_particles;

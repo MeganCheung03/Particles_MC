@@ -10,8 +10,8 @@ using namespace std;
 
 Engine::Engine()
 {
-	VideoMode vm(getDesktopMode().width, getDesktopMode().height);
-	m_Window.create(vm, "Particles");
+	VideoMode customMode(1440, 1080);
+	m_Window.create(customMode, "Particles");
 }
 
 void Engine::run()
@@ -80,7 +80,7 @@ void Engine::draw()
 {
 	m_Window.clear();
 	vector<Particle>::iterator it;
-	for (it = m_Particles.begin(); it != m_Particles.end(); it++)
+	for (it = m_particles.begin(); it != m_particles.end(); it++)
 	{ 
 		m_Window.draw(*it);
 	}
