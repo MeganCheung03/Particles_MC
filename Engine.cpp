@@ -10,10 +10,7 @@ using namespace std;
 
 Engine::Engine()
 {
-	int pixelWidth = VideoMode::getDesktopMode().width;
-	int pixelHeight = VideoMode::getDesktopMode().height;
-
-	VideoMode vm(pixelWidth, pixelHeight);
+	VideoMode vm(getDesktopMode().width, getDesktopMode().height);
 	m_Window.create(vm, "Particles");
 }
 
@@ -82,9 +79,11 @@ void Engine::update(float dtAsSeconds)
 void Engine::draw()
 {
 	m_Window.clear();
-	for (int i = 0; i < m_particles.size(); ++i)
-	{
-		m_Window.draw(i);
+	vector<Particle>::iterator it;
+	for (it = m_Particles.begin(); it != m_Particles.end(); it++)
+	{ 
+		m_Window.draw(*it);
 	}
+
 	m_Window.display();
 }
