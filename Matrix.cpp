@@ -9,7 +9,8 @@ namespace Matrices
 
         for (int j = 0; j < _cols; ++j)
         {
-            for (int i = 1; i < _rows; ++i)
+            a[j].resize(_cols);
+            for (int i = 0; i < _rows; ++i)
             {
                 a[j][i] = 0;
             }
@@ -18,50 +19,40 @@ namespace Matrices
 
     Matrix operator+(const Matrix& a, const Matrix& b) //adding two matrices
     {
-        int rowsA = a.getRows();
-        int rowsB = b.getRows();
-        int colsA = a.getCols();
-        int colsB = b.getCols();
-
-        Matrix added(rowsA, colsA);
-
-        if (rowsA != rowsB || colsA != colsB)
+        if (a.getRows() != b.getRows() || a.getCols() != b.getCols())
         {
-            throw runtime_error("Error: rows and columns must be the same number");
+            throw runtime_error("Error: rows and columns must be the same");
         }
 
-        for (int i = 0; i < rowsA; ++i)
+        Matrix added(a.getRows(), a.getCols());
+
+        for (int j = 0; j < a.getRows(); j++)
         {
-            for (int j = 0; j < colsA; ++j)
+            for (int i = 0; i < a.getCols(); i++)
             {
-                added(i, j) = a(i, j) + b(i, j);
+                added(j, i) = a(j, i) + b(j, i);
             }
         }
-
         return added;
+    }
     }
 
     Matrix operator*(const Matrix& a, const Matrix& b) //multiplying 2 matrices
     {
-        int rowsA = a.getRows();
-        int rowsB = b.getRows();
-        int colsA = a.getCols();
-        int colsB = b.getCols();
-
         Matrix mult(rowsA, colsB);
 
-        if (colsA != rowsB)
+        if (a.getCols() != b.getRows())
         {
             throw runtime_error("Error: A's columns and B's rows must match");
         }
 
-        for (int i = 0; i < colsB; ++i)
+        for (int i = 0; i < b.getCols(); ++i)
         {
-            for (int j = 0; j < rowsA; ++j)
+            for (int j = 0; j < a.getRows(; ++j)
             {
                 double sum = 0.0;
 
-                for (int k = 0; k < colsA; ++k)
+                for (int k = 0; k < a.getCols(); ++k)
                 {
                     sum += a(j, k) * b(k, i);
                 }
@@ -84,7 +75,7 @@ namespace Matrices
         {
             for (int j = 0; j < a.getCols(); ++j)
             {
-                if (a(i, j) != b(i, j))
+                if (abs(a(i, j) - b(i, j)) < 0.001)
                 {
                     return false;
                 }
@@ -101,12 +92,9 @@ namespace Matrices
 
     ostream& operator<<(ostream& os, const Matrix& a) //output the matrix
     {
-        int rows = a.getRows();
-        int cols = a.getCols();
-
-        for (int i = 0; i < rows; ++i)
+        for (int i = 0; i < a.getRows(; ++i)
         {
-            for (int j = 0; j < cols; ++j)
+            for (int j = 0; j < a.getCols(); ++j)
             {
                 os << a(i, j) << ' ';
             }
