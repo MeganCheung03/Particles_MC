@@ -35,7 +35,6 @@ namespace Matrices
         }
         return added;
     }
-    }
 
     Matrix operator*(const Matrix& a, const Matrix& b) //multiplying 2 matrices
     {
