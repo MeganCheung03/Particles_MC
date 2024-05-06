@@ -38,7 +38,7 @@ namespace Matrices
 
     Matrix operator*(const Matrix& a, const Matrix& b) //multiplying 2 matrices
     {
-        Matrix mult(rowsA, colsB);
+        Matrix mult(a.getRows(), b.getCols());
 
         if (a.getCols() != b.getRows())
         {
@@ -47,7 +47,7 @@ namespace Matrices
 
         for (int i = 0; i < b.getCols(); ++i)
         {
-            for (int j = 0; j < a.getRows(; ++j)
+            for (int j = 0; j < a.getRows(); ++j)
             {
                 double sum = 0.0;
 
@@ -91,7 +91,7 @@ namespace Matrices
 
     ostream& operator<<(ostream& os, const Matrix& a) //output the matrix
     {
-        for (int i = 0; i < a.getRows(; ++i)
+        for (int i = 0; i < a.getRows(); ++i)
         {
             for (int j = 0; j < a.getCols(); ++j)
             {
