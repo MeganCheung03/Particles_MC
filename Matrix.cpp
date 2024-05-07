@@ -6,61 +6,56 @@ namespace Matrices
     Matrix::Matrix(int _rows, int _cols) : rows(_rows), cols(_cols)
     {
         a.resize(_rows);
-
-        for (int j = 0; j < _cols; ++j)
+        for (int i = 0; i < _rows; i++)
         {
-            a[j].resize(_cols);
-            for (int i = 0; i < _rows; ++i)
+            a[i].resize(_cols);
+            for (int j = 0; j < _cols; j++)
             {
-                a[j][i] = 0;
+                a[i][j] = 0;
             }
         }
     }
 
-    Matrix operator+(const Matrix& a, const Matrix& b) //adding two matrices
+    Matrix operator+(const Matrix& a, const Matrix& b)
     {
         if (a.getRows() != b.getRows() || a.getCols() != b.getCols())
         {
-            throw runtime_error("Error: rows and columns must be the same");
+            throw runtime_error("Error: A and B's rows must match, same with the columns");
         }
 
         Matrix added(a.getRows(), a.getCols());
 
-        for (int j = 0; j < a.getRows(); j++)
+        for (int i = 0; i < a.getRows(); i++)
         {
-            for (int i = 0; i < a.getCols(); i++)
+            for (int j = 0; j < a.getCols(); j++)
             {
-                added(j, i) = a(j, i) + b(j, i);
+                added(i, j) = a(i, j) + b(i, j);
             }
         }
         return added;
     }
 
-    Matrix operator*(const Matrix& a, const Matrix& b) //multiplying 2 matrices
+    Matrix operator*(const Matrix& a, const Matrix& b)
     {
-
         if (a.getCols() != b.getRows())
         {
-            throw runtime_error("Error: A's columns and B's rows must match");
+            throw runtime_error("Error: A's rows must equal B's rows");
         }
 
         Matrix mult(a.getRows(), b.getCols());
 
-        for (int i = 0; i < b.getCols(); ++i)
+        for (int j = 0; j < b.getCols(); j++)         
         {
-            for (int j = 0; j < a.getRows(); ++j)
+            for (int i = 0; i < a.getRows(); i++)     
             {
                 double sum = 0;
-
-                for (int k = 0; k < a.getCols(); ++k)
+                for (int k = 0; k < a.getCols(); k++)   
                 {
-                    sum += a(j, k) * b(k, i);
+                    sum += a(i, k) * b(k, j);
                 }
-
-                mult(j, i) = sum;
+                mult(i, j) = sum;
             }
         }
-
         return mult;
     }
 
@@ -69,19 +64,18 @@ namespace Matrices
         if (a.getRows() != b.getRows() || a.getCols() != b.getCols())
         {
             return false;
-        } 
+        }
 
         for (int i = 0; i < a.getRows(); i++)
         {
-            for (int j = 0; j < a.getCols(); j++)
+            for (int k = 0; k < a.getCols(); k++)
             {
-                if (abs(a(i, j) - b(i, j)) < 0.001)
+                if (abs(a(i, k) - b(i, k)) < 0.001)
                 {
                     return false;
                 }
             }
-        } 
-
+        }
         return true;
     }
 
@@ -90,42 +84,44 @@ namespace Matrices
         return !(a == b);
     }
 
-    ostream& operator<<(ostream& os, const Matrix& a) //output the matrix
+    ostream& operator<<(ostream& os, const Matrix& a) 
     {
         for (int i = 0; i < a.getRows(); i++)
         {
-            for (int j = 0; j < a.getCols(); j++)
+            for (int k = 0; k < a.getCols(); k++)
             {
-                os << a(i, j) << ' ';
+                os << a(i, k) << " ";
             }
             os << '\n';
         }
-
         return os;
     } 
 
     RotationMatrix::RotationMatrix(double theta) : Matrix(2, 2)
     {
-        a[0][0] = cos(theta);
-        a[0][1] = -sin(theta);
-        a[1][0] = sin(theta);
-        a[1][1] = cos(theta);
+        double cosTheta = cos(theta);
+        double sinTheta = sin(theta);
+
+        (*this)(0, 0) = cosTheta; 
+        (*this)(0, 1) = -sinTheta; 
+        (*this)(1, 0) = sinTheta; 
+        (*this)(1, 1) = cosTheta;
     }
 
     ScalingMatrix::ScalingMatrix(double scale) : Matrix(2, 2)
     {
-        a[0][0] = scale;
-        a[0][1] = 0;
-        a[1][0] = 0;
-        a[1][1] = scale;
+        (*this)(0, 0) = scale;
+        (*this)(0, 1) = 0;
+        (*this)(1, 0) = 0;
+        (*this)(1, 1) = scale;
     }
 
     TranslationMatrix::TranslationMatrix(double xShift, double yShift, int nCols) : Matrix(2, nCols)
     {
-        for (int j = 0; j < nCols; ++j)
+        for (int j = 0; j < nCols; j++)
         {
-            a[0][j] = xShift;
-            a[1][j] = yShift;
+            (*this)(0, j) = xShift;
+            (*this)(1, j) = yShift;
         }
     }
 }
