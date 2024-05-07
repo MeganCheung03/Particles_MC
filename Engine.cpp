@@ -5,6 +5,9 @@
 #include <cstdlib>
 #include <ctime>
 
+using namespace sf;
+using namespace std;
+
 Engine::Engine()
 {
 	VideoMode customMode(1440, 1080);
