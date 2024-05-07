@@ -8,22 +8,29 @@
 
 Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition) : m_A(2, numPoints)
 {
+    //initialize variables
     m_ttl = TTL;
     m_numPoints = numPoints;
     m_radiansPerSec = ((float)rand() / (RAND_MAX)) * M_PI;
+    //map between monitor pixel coords to Cartesian coordinates to allow Matrix algebra to work
     m_cartesianPlane.setCenter(0, 0);
+    //initialize width and height to size of RenderWindow and invert the y-axis
     m_cartesianPlane.setSize(target.getSize().x, (-1.0) * target.getSize().y);
+    //store location of center on Cartesian plane
     m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane);
 
+    //assign random horizontal velocties 
     m_vx = rand() % 401 + 100; 
+    //make m_vx randomly positive or negative
     int posOrNeg = rand() % 2;
     if (posOrNeg != 0)
     {
         m_vx *= (-1);
     }
-
+    //assign random vertical velocities
     m_vy = rand() % 401 + 100; 
 
+    //colors
     m_color1.r = 255;
     m_color1.g = 255;
     m_color1.b = 255;
@@ -33,8 +40,10 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     m_color2.b = 0;
 
     float theta = ((float)rand() / (RAND_MAX)) * (M_PI / 2);
+    //amount to rotate per vertex
     float dTheta = 2 * M_PI / (numPoints - 1);
 
+    //generate numPoint vertices with randomizsed radii
     for (int i = 0; i < numPoints; i++)
     {
         float r, dx, dy;
@@ -47,17 +56,21 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     }
 }
 
-void Particle::draw(RenderTarget& target, RenderStates states) const
+void Particle::draw(RenderTarget& target, RenderStates states) const 
 {
+    //overrides the virtual function from Drawable to allow this one to polymorph
+    //convert Cartesian matrix coords from m_a to pixel coords in VertexArray
     sf::VertexArray lines(TriangleFan, m_numPoints + 1);
-
+    //store location on monitor of center of particle
     sf::Vector2i screenCenter = target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane);
     sf::Vector2f center(screenCenter);
+    //give center of the particle and a colour
     lines[0].position = center;
     lines[0].color = m_color1;
 
     for (int i = 1; i <= m_numPoints; i++)
     {
+        //map from Cartesian to pixel coords       
         sf::Vector2f coords(m_A(0, i - 1), m_A(1, i - 1));
         sf::Vector2i pixelCoords = target.mapCoordsToPixel(coords, m_cartesianPlane);
         sf::Vector2f pixel(pixelCoords);
@@ -65,16 +78,20 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
         lines[i].position = pixel;
         lines[i].color = m_color2;
     }
+    //draw VertexArray
     target.draw(lines, states);
 }
 
 void Particle::update(float dt)
 {
+    //decreasing time to live, rotating the particle, and changing it's size
     m_ttl -= dt;
     rotate(dt * m_radiansPerSec);
     scale(SCALE);
     float dx, dy;
+    //how far to shift/translate particle
     dx = m_vx * dt;
+    //travel up and then fall down
     m_vy -= G * dt; 
     dy = m_vy * dt;
     translate(dx, dy);
@@ -227,18 +244,22 @@ void Particle::unitTests()
 void Particle::rotate(double theta)
 {
     Vector2f temp = m_centerCoordinate;
-    translate(-temp.x, -temp.y);
+    //shift particle's center back to origin
+    translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
     RotationMatrix R(theta);
     m_A = R * m_A;
+    //shift particle back to original center
     translate(temp.x, temp.y);
 }
 
 void Particle::scale(double c)
 {
     Vector2f temp = m_centerCoordinate;
+    //shift particle's center back to origin
     translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
     ScalingMatrix S(c);
     m_A = S * m_A;
+    //shift particle back to original center
     translate(temp.x, temp.y);
 }
 
