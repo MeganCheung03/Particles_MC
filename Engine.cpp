@@ -5,9 +5,6 @@
 #include <cstdlib>
 #include <ctime>
 
-using namespace sf;
-using namespace std;
-
 Engine::Engine()
 {
 	VideoMode customMode(1440, 1080);
@@ -26,7 +23,7 @@ void Engine::run()
 
 	while (m_Window.isOpen())
 	{
-		Time t = c.restart();
+		sf::Time t = c.restart();
 		float seconds = t.asSeconds();
 		input();
 		update(seconds);
@@ -44,14 +41,16 @@ void Engine::input()
 			m_Window.close();
 		}
 
-		vector<Particle> newParticle;
+		std::vector<Particle> newParticle;
+
 		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
-			sf::Vector2i mousePos = sf::Mouse::getPosition(m_Window);
+			sf::Vector2i mousePosition = sf::Mouse::getPosition(m_Window);
+
 			for (int i = 0; i < 5; i++)
 			{
 				int numPoints = rand() % 26 + 25;
-				newParticle.push_back(Particle(m_Window, numPoints, mousePos));
+				newParticle.push_back(Particle(m_Window, numPoints, mousePosition));
 			}
 		}
 		m_particles.insert(m_particles.begin(), newParticle.begin(), newParticle.end());
@@ -60,7 +59,7 @@ void Engine::input()
 
 void Engine::update(float dtAsSeconds)
 {
-	vector<Particle>::iterator it;
+	std::vector<Particle>::iterator it;
 
 	for (it = m_particles.begin(); it != m_particles.end();)
 	{ 
@@ -80,7 +79,8 @@ void Engine::update(float dtAsSeconds)
 void Engine::draw()
 {
 	m_Window.clear();
-	vector<Particle>::iterator it;
+
+	std::vector<Particle>::iterator it;
 
 	for (it = m_particles.begin(); it != m_particles.end(); it++)
 	{ 

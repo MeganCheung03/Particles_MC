@@ -38,18 +38,19 @@ namespace Matrices
 
     Matrix operator*(const Matrix& a, const Matrix& b) //multiplying 2 matrices
     {
-        Matrix mult(a.getRows(), b.getCols());
 
         if (a.getCols() != b.getRows())
         {
             throw runtime_error("Error: A's columns and B's rows must match");
         }
 
+        Matrix mult(a.getRows(), b.getCols());
+
         for (int i = 0; i < b.getCols(); ++i)
         {
             for (int j = 0; j < a.getRows(); ++j)
             {
-                double sum = 0.0;
+                double sum = 0;
 
                 for (int k = 0; k < a.getCols(); ++k)
                 {
@@ -70,9 +71,9 @@ namespace Matrices
             return false;
         } 
 
-        for (int i = 0; i < a.getRows(); ++i)
+        for (int i = 0; i < a.getRows(); i++)
         {
-            for (int j = 0; j < a.getCols(); ++j)
+            for (int j = 0; j < a.getCols(); j++)
             {
                 if (abs(a(i, j) - b(i, j)) < 0.001)
                 {
@@ -91,9 +92,9 @@ namespace Matrices
 
     ostream& operator<<(ostream& os, const Matrix& a) //output the matrix
     {
-        for (int i = 0; i < a.getRows(); ++i)
+        for (int i = 0; i < a.getRows(); i++)
         {
-            for (int j = 0; j < a.getCols(); ++j)
+            for (int j = 0; j < a.getCols(); j++)
             {
                 os << a(i, j) << ' ';
             }
