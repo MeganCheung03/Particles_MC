@@ -236,7 +236,7 @@ void Particle::rotate(double theta)
 void Particle::scale(double c)
 {
     Vector2f temp = m_centerCoordinate;
-    translate(-temp.x, -temp.y);
+    translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
     ScalingMatrix S(c);
     m_A = S * m_A;
     translate(temp.x, temp.y);
