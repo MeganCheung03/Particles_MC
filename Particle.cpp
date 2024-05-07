@@ -245,7 +245,7 @@ void Particle::rotate(double theta)
 {
     Vector2f temp = m_centerCoordinate;
     //shift particle's center back to origin
-    translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
+    translate(-temp.x, -temp.y);
     RotationMatrix R(theta);
     m_A = R * m_A;
     //shift particle back to original center
