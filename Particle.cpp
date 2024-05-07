@@ -244,18 +244,18 @@ void Particle::unitTests()
 void Particle::rotate(double theta)
 {
     Vector2f temp = m_centerCoordinate;
-    //shift particle's center back to origin
+    // shift particles center back to origin
     translate(-temp.x, -temp.y);
     RotationMatrix R(theta);
     m_A = R * m_A;
-    //shift particle back to original center
+    //shift particle back to origin center
     translate(temp.x, temp.y);
 }
 
 void Particle::scale(double c)
 {
     Vector2f temp = m_centerCoordinate;
-    //shift particle's center back to origin
+    //shift  particle center back to the origin
     translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
     ScalingMatrix S(c);
     m_A = S * m_A;
