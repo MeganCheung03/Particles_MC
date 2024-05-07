@@ -51,7 +51,7 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
 {
     sf::VertexArray lines(TriangleFan, m_numPoints + 1);
 
-    sf:Vector2i screenCenter = target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane);
+    sf::Vector2i screenCenter = target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane);
     sf::Vector2f center(screenCenter);
     lines[0].position = center;
     lines[0].color = m_color1;
