@@ -31,13 +31,13 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     m_vy = rand() % 401 + 100; 
 
     //colors
-    m_color1.r = 255;
-    m_color1.g = 255;
-    m_color1.b = 255;
+    m_color2.r = rand() % 256;
+    m_color2.g = rand() % 256;
+    m_color2.b = rand() % 256;
 
-    m_color2.r = 0;
-    m_color2.g = 128;
-    m_color2.b = 0;
+    m_color1.r = 0;
+    m_color1.g = 128;
+    m_color1.b = 0;
 
     float theta = ((float)rand() / (RAND_MAX)) * (M_PI / 2);
     //amount to rotate per vertex
